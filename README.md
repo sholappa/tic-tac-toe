@@ -1,4 +1,4 @@
 # tictactoe
 
 
-Classic game made with javascript. 
+Classic game made with Javascript. 
