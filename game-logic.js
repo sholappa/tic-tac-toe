@@ -9,8 +9,10 @@ console.log(boxes)
 const O_TEXT = "O"
 const X_TEXT = "X"
 
+
 let currentPlayer = X_TEXT
 let spaces = Array(9).fill(null)
+let count_plays = 0
 
 const startGame = () => {
     boxes.forEach(box => box.addEventListener('click', boxclicked))
@@ -19,19 +21,25 @@ const startGame = () => {
 function boxclicked(e) {
     const id = e.target.id
 
-    if(!spaces[id]){
+    if(!spaces[id] && count_plays < 9){
         spaces[id] = currentPlayer
         e.target.innerText = currentPlayer
 
         if(playerHasWon() !==false){
-            playerText = `${currentPlayer} has won!`
+            playerText.innerHTML = `${currentPlayer} has won!`
             let winning_blocks = playerHasWon()
-           
+           count_plays = 10
             winning_blocks.map(box => boxes[box].style.backgroundColor=winnerIndicator)
+        
             return
         }
-
+        count_plays++
         currentPlayer = currentPlayer == X_TEXT ? O_TEXT : X_TEXT
+    }
+
+    if(count_plays == 9 ) {
+        playerText.innerHTML = 'Draw!'
+        boxes.forEach(box => box.style.color = drawIndicator) 
     }
 }
 
@@ -61,10 +69,12 @@ restartBtn.addEventListener('click', restart)
 
 function restart() {
     spaces.fill(null)
-
+    count_plays = 0
+    playerText.innerHTML ="Tic Tac Toe";
     boxes.forEach( box => {
         box.innerText = ''
         box.style.backgroundColor=''
+        box.style.color = '#fff'
 
     })
     currentPlayer = X_TEXT
